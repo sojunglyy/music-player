@@ -1,0 +1,58 @@
+export let songs = [
+  {
+    id: "1",
+    name: "Break the Disc",
+    path: "/music/breakthedisc.mp3",
+    artist: "Dreamt",
+    cover: "/images/breakthedisc.jpg",
+  },
+  {
+    id: "2",
+    name: "Scream Villain",
+    path: "/music/screamvillain.mp3",
+    artist: "The Fable",
+    cover: "/images/screamvillain.jpg",
+  },
+  {
+    id: "3",
+    name: "All That",
+    path: "/music/allthat.mp3",
+    artist: "Benjamin Tissot",
+    cover: "/images/allthat.jpg",
+  },
+  {
+    id: "4",
+    name: "Dawn of Change",
+    path: "/music/dawnofchange.mp3",
+    artist: "Roman Senyk",
+    cover: "/images/dawnofchange.jpg",
+  },
+  {
+    id: "5",
+    name: "Hip Jazz",
+    path: "/music/hipjazz.mp3",
+    artist: "Benjamin Tissot",
+    cover: "/images/hipjazz.jpg",
+  },
+  {
+    id: "6",
+    name: "Soft Vibes",
+    path: "/music/softvibes.mp3",
+    artist: "Vital",
+    cover: "/images/softvibes.jpg",
+  },
+  {
+    id: "7",
+    name: "Moonlight Drive",
+    path: "/music/moonlightdrive.mp3",
+    artist: "Yunior Arronte",
+    cover: "/images/moonlightdrive.jpg",
+  },
+  {
+    id: "8",
+    name: "Doing Damage",
+    path: "/music/doingdamage.mp3",
+    artist: "Dollshade",
+    cover: "/images/doingdamage.jpg",
+  },
+];

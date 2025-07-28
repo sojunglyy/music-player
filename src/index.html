@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="style.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Sour+Gummy:ital,wght@0,100..900;1,100..900&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Bitcount+Prop+Single:wght@100..900&display=swap"
+      rel="stylesheet"
+    />
+    <title>Music Player</title>
+  </head>
+  <body>
+    <audio src="" id="audio"></audio>
+
+    <div class="music-player">
+      <div class="song-name-container">
+        <h1 class="song-name">
+          This is a very long song name that will scroll left
+        </h1>
+      </div>
+      <p class="artist-name">artist</p>
+
+      <div class="disk"></div>
+
+      <div class="song-slider-container">
+        <input type="range" value="0" class="song-slider" />
+        <span class="current-time">00:00</span>
+        <span class="song-duration">00:00</span>
+      </div>
+
+      <div class="controls">
+        <button class="btn backward-btn"><span></span> <span></span></button>
+        <button class="play-btn pause">
+          <span></span>
+          <span></span>
+        </button>
+        <button class="btn forward-btn"><span></span> <span></span></button>
+      </div>
+    </div>
+    <script src="script-2.js" type="module"></script>
+  </body>
+</html>

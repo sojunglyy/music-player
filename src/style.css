@@ -1,0 +1,265 @@
+:root {
+  --background-color: #fc9df1;
+  --font-color: #d418b5f8;
+  --music-player-color: rgba(255, 255, 255, 0.2);
+  --music-player-shadow: rgba(236, 135, 219, 0.9);
+  --disk-border-color: rgba(239, 125, 205, 0.8);
+  --disk-shadow: rgba(236, 135, 219, 0.9);
+  --disk-inner-border-color: rgba(229, 140, 202, 0.8);
+  --disk-inner-background-color: #f49aea;
+  --button-color: #fff1fdf1;
+  --button-icon-color: #dd38b7;
+  --button-shadow: rgba(236, 135, 219, 0.2);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: var(--background-color);
+  color: var(--font-color);
+  font-family: "Bitcount Prop Single", system-ui;
+  font-optical-sizing: auto;
+  font-weight: 300;
+  font-style: normal;
+}
+
+.music-player {
+  width: 350px;
+  height: 550px;
+  border-radius: 20px;
+  background: var(--music-player-color);
+  box-shadow: 0 0 20px var(--music-player-shadow);
+  padding: 30px;
+  overflow: hidden;
+}
+
+.song-name-container {
+  width: 100%;
+  overflow: hidden;
+  text-align: center;
+}
+
+.song-name,
+.artist-name {
+  text-align: center;
+  text-transform: capitalize;
+}
+
+.song-name {
+  font-weight: 500;
+  font-size: 2.6rem;
+  margin-bottom: 5px;
+  display: inline-block;
+  white-space: nowrap;
+  overflow: hidden;
+  text-align: center;
+  text-transform: capitalize;
+  animation: scroll-left 15s linear infinite;
+}
+
+@keyframes scroll-left {
+  0% {
+    transform: translateX(90%);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
+}
+
+.artist-name {
+  font-weight: 400;
+  font-size: 1.3rem;
+}
+
+.disk {
+  position: relative;
+  display: block;
+  margin: 20px auto;
+  width: 240px;
+  height: 240px;
+  border-radius: 50%;
+  border: 1px var(--disk-border-color) solid;
+  background-image: url("/images/breakthedisc.jpg");
+  background-size: cover;
+  box-shadow: 0 0 15px 5px var(--disk-shadow);
+  animation: rotate 20s linear infinite;
+  /* animation-play-state is used to set animation state */
+  animation-play-state: paused;
+}
+
+/* play the disk animation when it's playing */
+.disk.play {
+  animation-play-state: running;
+}
+
+/* create a hole at the center of the disk */
+.disk::before {
+  content: " ";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 1px var(--disk-inner-border-color) solid;
+  background: var(--disk-inner-background-color);
+}
+
+.song-slider-container {
+  width: 100%;
+  position: relative;
+}
+
+.song-slider {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 5px;
+  border-radius: 10px;
+  background: var(--button-color);
+  /* hide the sliding */
+  overflow: hidden;
+  cursor: pointer;
+}
+
+.song-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 1px;
+  height: 20px;
+  background: var(--button-icon-color);
+  box-shadow: -400px 0 0 400px var(--button-icon-color);
+}
+
+.current-time,
+.song-duration {
+  font-size: 0.8rem;
+  font-weight: 300;
+}
+
+.song-duration {
+  position: absolute;
+  right: 0;
+}
+
+.controls {
+  width: 60%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: auto;
+  margin-top: 20px;
+}
+
+.play-btn {
+  position: relative;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: var(--button-color);
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 0 5px 5px var(--button-shadow);
+}
+
+.play-btn span {
+  position: absolute;
+  top: 50%;
+  left: 30%;
+  transform: translateY(-50%);
+  width: 10px;
+  height: 30px;
+  background: var(--button-icon-color);
+  transition: 0.5s;
+  clip-path: polygon(0 0, 100% 0, 100% 100%, 0% 100%);
+}
+
+.play-btn span:nth-child(2) {
+  left: 54%;
+  transform-origin: center;
+}
+
+/* make the second span disappear */
+.play-btn.pause span:nth-child(2) {
+  transform: translateY(-50%) scaleY(0);
+  clip-path: polygon(0 0, 100% 50%, 100% 50%, 0% 100%);
+  transition-delay: 1s;
+  transition: 0.45s;
+}
+
+/* change the shape of the first span */
+.play-btn.pause span:nth-child(1) {
+  width: 35%;
+  left: 52%;
+  transform: translate(-40%, -50%);
+  clip-path: polygon(0 0, 100% 50%, 100% 50%, 0% 100%);
+}
+
+/* animation when it's paused */
+.play-btn.pause {
+  animation: pulse 2s linear infinite;
+}
+
+@keyframes pulse {
+  0% {
+    box-shadow: 0 0 5px 5px var(--button-shadow);
+  }
+  50% {
+    /* box-shadow: 0 0 2px 3px rgba(255, 255, 255, 0.75); */
+    box-shadow: 0 0 5px 5px rgba(255, 255, 255, 0.8);
+  }
+  100% {
+    /* box-shadow: 0 0 5px 5px rgba(235, 144, 236, 0.03); */
+    box-shadow: 0 0 5px 5px var(--button-shadow);
+  }
+}
+
+.btn {
+  width: 40px;
+  height: 40px;
+  background: var(--button-color);
+  border: none;
+  box-shadow: 0 0 5px 5px var(--button-shadow);
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+}
+
+.backward-btn span {
+  position: relative;
+  right: 1.5px;
+  width: 12px;
+  height: 12px;
+  background: var(--button-icon-color);
+  clip-path: polygon(100% 0, 100% 100%, 12% 50%);
+}
+
+.forward-btn span {
+  position: relative;
+  left: 1.5px;
+  width: 12px;
+  height: 12px;
+  background: var(--button-icon-color);
+  clip-path: polygon(0 0, 0% 100%, 88% 50%);
+}
+
+@keyframes rotate {
+  0% {
+    transform: rotate(0);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
