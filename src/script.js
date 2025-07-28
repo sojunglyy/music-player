@@ -1,96 +1,125 @@
-let currentMusic = 0;
+import { songs } from "../data.js";
 
-const music = document.querySelector("#audio");
-const seekBar = document.querySelector(".seek-bar");
+const songList = songs;
+const audio = document.querySelector("#audio");
 const songName = document.querySelector(".song-name");
 const artistName = document.querySelector(".artist-name");
 const disk = document.querySelector(".disk");
+const songSlider = document.querySelector(".song-slider");
 const currentTime = document.querySelector(".current-time");
 const songDuration = document.querySelector(".song-duration");
+const backwardBtn = document.querySelector(".backward-btn");
 const playBtn = document.querySelector(".play-btn");
 const forwardBtn = document.querySelector(".forward-btn");
-const backwardBtn = document.querySelector(".backward-btn");
 
-playBtn.addEventListener("click", () => {
-  if (playBtn.className.includes("pause")) {
-    music.play();
-  } else {
-    music.pause();
-  }
-  playBtn.classList.toggle("pause");
-  disk.classList.toggle("play");
-});
+let i = 0;
+let currentSong = songList[i];
 
 //setup music
-const setMusic = (i) => {
-  seekBar.value = 0;
-  let song = songs[i]; //songs array from data.js
-  currentMusic = i;
-  music.src = song.path;
+const setUpMusic = (currentSong) => {
+  //set audio
+  audio.src = currentSong.path;
 
-  songName.innerHTML = song.name;
-  artistName.innerHTML = song.artist;
-  disk.style.backgroundImage = `url(${song.cover})`;
+  //display song
+  songName.innerHTML = currentSong.name;
+  artistName.innerHTML = currentSong.artist;
+  disk.style.backgroundImage = `url(${currentSong.cover})`;
 
+  //set slider
   currentTime.innerHTML = "00:00";
-
+  songSlider.value = 0;
   setTimeout(() => {
-    seekBar.max = music.duration;
-    songDuration.innerHTML = formatTime(music.duration);
+    const duration = audio.duration;
+    songDuration.innerHTML = formatTime(duration);
+    songSlider.max = duration;
   }, 300);
+
+  //play music automatically
+  if (!playBtn.className.includes("pause")) {
+    audio.play();
+    setInterval(moveSlider, 500);
+  }
 };
 
-// format time in min and sec
+//format time
 const formatTime = (time) => {
   let min = Math.floor(time / 60);
+  let sec = Math.floor(time % 60);
   if (min < 10) {
     min = `0${min}`;
   }
-  let sec = Math.floor(time % 60);
   if (sec < 10) {
     sec = `0${sec}`;
   }
   return `${min}:${sec}`;
 };
 
-setMusic(0);
-
-// seek bar
-setInterval(() => {
-  seekBar.value = music.currentTime;
-  currentTime.innerHTML = formatTime(music.currentTime);
-  if (Math.floor(music.currentTime) == Math.floor(seekBar.max)) {
-    forwardBtn.click();
-  }
-}, 500);
-
-seekBar.addEventListener("change", () => {
-  music.currentTime = seekBar.value;
-});
-
+//play/pause music
 const playMusic = () => {
-  music.play();
-  playBtn.classList.remove("pause");
-  disk.classList.add("play");
+  if (playBtn.className.includes("pause")) {
+    audio.play();
+    setInterval(moveSlider, 500);
+  } else {
+    audio.pause();
+  }
+  playBtn.classList.toggle("pause");
+  disk.classList.toggle("play");
 };
 
-//forward and backward button
-forwardBtn.addEventListener("click", () => {
-  if (currentMusic >= songs.length - 1) {
-    currentMusic = 0;
-  } else {
-    currentMusic++;
+//move slider while playing
+const moveSlider = () => {
+  const timeStamp = audio.currentTime;
+  songSlider.value = timeStamp;
+  currentTime.innerHTML = formatTime(timeStamp);
+  //forward to the next song
+  if (timeStamp == songSlider.max) {
+    playNextSong();
   }
-  setMusic(currentMusic);
-  playMusic();
-});
+};
 
-backwardBtn.addEventListener("click", () => {
-  if (currentMusic <= 0) {
-    currentMusic = songs.length - 1;
+//set the new value on slider
+const handleSliderChange = (e) => {
+  audio.currentTime = songSlider.value;
+  setInterval(moveSlider, 500);
+};
+
+//forward
+const playNextSong = () => {
+  if (i >= songList.length - 1) {
+    i = 0;
   } else {
-    currentMusic--;
+    i++;
   }
-  setMusic(currentMusic);
-  playMusic();
-});
+  autoPlay();
+  setUpMusic(songList[i]);
+};
+
+//backward
+const playPrevSong = () => {
+  if (i === 0) {
+    i = songList.length - 1;
+  } else {
+    i--;
+  }
+  autoPlay();
+  setUpMusic(songList[i]);
+};
+
+//auto play when the new song is set
+const autoPlay = () => {
+  if (playBtn.className.includes("pause")) {
+    playBtn.classList.remove("pause");
+  }
+
+  if (!disk.className.includes("play")) {
+    disk.classList.add("play");
+  }
+};
+
+//event listeners
+playBtn.addEventListener("click", playMusic);
+forwardBtn.addEventListener("click", playNextSong);
+backwardBtn.addEventListener("click", playPrevSong);
+songSlider.addEventListener("change", handleSliderChange);
+
+setUpMusic(currentSong);
